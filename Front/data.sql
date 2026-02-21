@@ -18,6 +18,14 @@ CREATE TABLE reservations (
     commentaire TEXT
 );
 
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  nom VARCHAR(100) NOT NULL,
+  email VARCHAR(150) UNIQUE NOT NULL,
+  mot_de_passe TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
 
 INSERT INTO salons (nom, adresse) VALUES
 ('Le Chic Atelier', '12 Rue de la Beauté • 75001'),

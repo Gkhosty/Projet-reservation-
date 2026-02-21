@@ -1,11 +1,42 @@
-
-// affichage Header et en haut avec prepend method
-
+// affichage Header
 const header = document.createElement('header');
-header.innerHTML = `<h1>CoiffeurProMax</h1>`;
 header.className = 'header';
+
+// on vérifie si l'utilisateur est connecté
+const token = localStorage.getItem('token');
+
+if (token) {
+    header.innerHTML = `
+        <h1>CoiffeurProMax</h1>
+        <div class="header-btns">
+            <button id="btn-deconnexion" class="btn btn-secondary">
+                <i class="fa-solid fa-right-from-bracket"></i> Se déconnecter
+            </button>
+        </div>
+    `;
+} else {
+    header.innerHTML = `
+        <h1>CoiffeurProMax</h1>
+        <div class="header-btns">
+            <a href="../page-login/login.html" class="btn btn-secondary">
+                <i class="fa-solid fa-user"></i> Se connecter
+            </a>
+        </div>
+    `;
+}
+
 document.body.prepend(header);
 
+// bouton deconnexion
+const btnDeconnexion = document.getElementById('btn-deconnexion');
+if (btnDeconnexion) {
+    btnDeconnexion.addEventListener('click', () => {
+        localStorage.removeItem('token');
+        window.location.href = '../page-login/login.html';
+    });
+}
+
+// ajouter un searchBar
 const searchBar = document.createElement('div');
 searchBar.className = 'recherche';
 searchBar.innerHTML = `
@@ -24,14 +55,15 @@ aside.innerHTML = `
 `;
 document.body.appendChild(aside);
 
+// footer 
 const footer = document.createElement('footer');
 footer.innerHTML = `<p>© 2026 CoiffureProMax — Tous droits réservés</p>`;
 document.body.appendChild(footer);
 
+// afficher les salons
 async function fetchData(search = '') {
     const response = await fetch('http://localhost:4242/salons');
     const salons = await response.json();
-    console.log('salons:', salons);
 
     const container = document.getElementById('rout');
     container.innerHTML = '';
@@ -48,12 +80,26 @@ async function fetchData(search = '') {
                 <h3>${salon.nom}</h3>
                 <p>${salon.adresse}</p>
                 <p>${salon.Contact}</p>
-                <a href="reservation.html" class="btn btn-primary">Réserver</a>
+                <button class="btn btn-primary btn-reserver" data-salon="${encodeURIComponent(salon.nom)}">Réserver</button>
             </div>
         `;
         container.appendChild(card);
     });
 }
+
+
+document.getElementById('rout').addEventListener('click', (e) => {
+    if (e.target.classList.contains('btn-reserver')) {
+        const token = localStorage.getItem('token');
+        const salon = e.target.dataset.salon;
+
+        if (!token) {
+            window.location.href = '../page-login/login.html';
+        } else {
+            window.location.href = `../page-reservation/reservation.html?salon=${salon}`;
+        }
+    }
+});
 
 document.getElementById('btn-chercher').addEventListener('click', () => {
     const search = document.getElementById('search-input').value;

@@ -9,6 +9,9 @@ if (token) {
     header.innerHTML = `
         <h1>CoiffeurProMax</h1>
         <div class="header-btns">
+            <a href="../page-recap/Recap.html" class="btn btn-secondary">
+                <i class="fa-solid fa-calendar-check"></i> Mes Rendez-vous
+            </a>
             <button id="btn-deconnexion" class="btn btn-secondary">
                 <i class="fa-solid fa-right-from-bracket"></i> Se déconnecter
             </button>
@@ -86,7 +89,6 @@ async function fetchData(search = '') {
         container.appendChild(card);
     });
 }
-
 
 document.getElementById('rout').addEventListener('click', (e) => {
     if (e.target.classList.contains('btn-reserver')) {

@@ -4,44 +4,45 @@ header.innerHTML = `<h1>CoiffeurProMax</h1>`;
 header.className = 'header';
 document.body.prepend(header);
 
+// ─── Afficher un message popup ────
+function afficherPopup(message, type = 'popup-succes') {
+    const popup = document.createElement('div');
+    popup.textContent = message;
+    popup.className = `popup ${type}`;
+    document.body.appendChild(popup);
+    setTimeout(() => popup.remove(), 3000);
+}
+
 // titre
 const titre = document.createElement('h2');
 titre.textContent = 'Récapitulatif de mes RDV';
 titre.className = 'recap-titre';
 document.body.appendChild(titre);
 
-// div recherche email
-const divRecherche = document.createElement('div');
-divRecherche.className = 'recap-recherche';
-
-const inputEmail = document.createElement('input');
-inputEmail.type = 'email';
-inputEmail.placeholder = 'Entrez votre email...';
-
-const btnChercher = document.createElement('button');
-btnChercher.textContent = 'Chercher';
-btnChercher.className = 'btn btn-primary';
-
-divRecherche.appendChild(inputEmail);
-divRecherche.appendChild(btnChercher);
-document.body.appendChild(divRecherche);
-
 // container pour les rdv
 const container = document.createElement('div');
 container.id = 'rout-recap';
 document.body.appendChild(container);
 
-// afficher les rdv filtrés par email
+// on récupère le token depuis le navigateur
+const token = localStorage.getItem('token');
+
+// si y'a pas de token on redirige vers login
+if (!token) {
+    window.location.href = '../page-login/login.html';
+}
+
+// afficher les rdv de l'utilisateur connecté
 async function fetchRDV() {
-    const email = inputEmail.value;
-    const response = await fetch('http://localhost:4242/reservations');
+    const response = await fetch('http://localhost:4242/reservations', {
+        headers: { 'authorization': `Bearer ${token}` }
+    });
     const reservations = await response.json();
 
     container.innerHTML = '';
 
-    const filtered = reservations.filter(rdv => rdv.email === email);
-
-    filtered.forEach(rdv => {
+    // on affiche directement les réservations retournées par le serveur
+    reservations.forEach(rdv => {
         const card = document.createElement('div');
         card.className = 'rdv-card';
 
@@ -76,6 +77,7 @@ async function fetchRDV() {
                     heure: inputHeure.value
                 })
             });
+            afficherPopup('✅ RDV modifié avec succès !');
             fetchRDV();
         });
 
@@ -86,6 +88,7 @@ async function fetchRDV() {
             await fetch(`http://localhost:4242/reservations/${rdv.id}`, {
                 method: 'DELETE'
             });
+            afficherPopup('🗑️ RDV supprimé !', 'popup-erreur');
             fetchRDV();
         });
 
@@ -100,7 +103,7 @@ async function fetchRDV() {
     });
 }
 
-btnChercher.addEventListener('click', fetchRDV);
+fetchRDV();
 
 // lien retour
 const retour = document.createElement('div');

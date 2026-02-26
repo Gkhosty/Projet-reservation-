@@ -14,15 +14,24 @@ section.innerHTML = `
 
         <button type="submit">Se connecter</button>
 
-         <a href="../page-register/register.html">Pas encore de compte ? S'inscrire</a>
+        <a href="../page-register/register.html">Pas encore de compte ? S'inscrire</a>
     </form>
 `;
 
-// envoyer les donner au server
+// ─── Afficher un message popup ────────────────────────────────────
+function afficherPopup(message, type = 'popup-succes') {
+    const popup = document.createElement('div');
+    popup.textContent = message;
+    popup.className = `popup ${type}`;
+    document.body.appendChild(popup);
+    setTimeout(() => popup.remove(), 3000);
+}
+
+// ─────────────────────────────────────────────────────────────────
 
 const formulaire = document.getElementById('formulaire-login');
 formulaire.addEventListener('submit', async function(event){
-    event.preventDefault(); //on empêche la page de se recharger
+    event.preventDefault();
 
     const response = await fetch('http://localhost:4242/login', {
         method: 'POST',
@@ -34,16 +43,26 @@ formulaire.addEventListener('submit', async function(event){
     })
 
     const data = await response.json();
+
     if (response.ok) {
-        localStorage.setItem('token', data.token); // on sougard le token dans le navigateur
-        alert('Connection réussi !');
-        window.location.href = '../page-accueil/index.html';// on te orient vers la page d'acceul
+        // on sauvegarde le token dans le navigateur
+        localStorage.setItem('token', data.token);
+
+        // on lit les infos qui sont dans le token pour savoir le role
+        const payload = JSON.parse(atob(data.token.split('.')[1]));
+        const role = payload.role;
+
+        // si c'est un admin on l'envoie vers la page admin sinon vers l'accueil
+        if (role === 'admin') {
+            window.location.href = '../page-admin/admin.html';
+        } else {
+            window.location.href = '../page-accueil/index.html';
+        }
     } else {
-        alert(data.erreur)
+        // si le mot de passe ou l'email est incorrect on affiche une erreur
+        afficherPopup('❌ ' + data.erreur, 'popup-erreur');
     }
 })
-
-
 
 const footer = document.querySelector('footer');
 footer.innerHTML = `<p>© 2026 CoiffureProMax – Tous droits réservés</p>`;

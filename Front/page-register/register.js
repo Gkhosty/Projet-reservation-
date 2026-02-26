@@ -6,26 +6,33 @@ section.className = 'formulaire-register';
 section.innerHTML = `
 <h2>Créer un compte</h2>
 <form id="formulaire-register">
-<label>Nom et Prénom</lable>
+<label>Nom et Prénom</label>
 <input type="text" name="nom" required>
 
 <label>Email</label>
-<input type="Email" name="email" required>
+<input type="email" name="email" required>
 
 <label>Mot de passe</label>
 <input type="password" name="mot_de_passe" required>
-
 
 <button type="submit">S'inscrire</button>
 </form>
 `;
 
+// ─── Afficher un message popup ───
+function afficherPopup(message, type = 'popup-succes') {
+    const popup = document.createElement('div');
+    popup.textContent = message;
+    popup.className = `popup ${type}`;
+    document.body.appendChild(popup);
+    setTimeout(() => popup.remove(), 3000);
+}
+
 
 const formulaire = document.getElementById('formulaire-register');
-//une fois que qqun clique sur s'inscrire
 formulaire.addEventListener('submit', async function(event){
-    event.preventDefault() //on empeche la page de se reharger
-    //on envoie les donnes au serveur
+    event.preventDefault();
+
     const response = await fetch('http://localhost:4242/register', {
         method: 'POST',
         headers: {'Content-type': 'application/json'},
@@ -35,10 +42,15 @@ formulaire.addEventListener('submit', async function(event){
             mot_de_passe: formulaire.mot_de_passe.value
         })
     })
-    // si ça marche on regirgie vers login 
+
     if (response.ok){
-        alert('Compte créé avec succés !')
-        window.location.href = '../page-login/login.html'
+        afficherPopup('✅ Compte créé avec succès !');
+        setTimeout(() => {
+            window.location.href = '../page-login/login.html';
+        }, 1500);
+    } else {
+        const data = await response.json();
+        afficherPopup('❌ ' + data.erreur, 'popup-erreur');
     }
 })
 

@@ -8,6 +8,14 @@ document.body.prepend(header);
 const params = new URLSearchParams(window.location.search);
 const nomSalon = params.get('salon');
 
+// on récupère le token depuis le navigateur
+const token = localStorage.getItem('token');
+
+// si y'a pas de token on redirige vers login
+if (!token) {
+    window.location.href = '../page-login/login.html';
+}
+
 const section = document.createElement('section');
 section.className = 'formulaire-reservation';
 
@@ -86,11 +94,13 @@ const formulaire = document.getElementById('formulaire');
 formulaire.addEventListener('submit', async function(event) {
     event.preventDefault();
 
+    // on envoie le token dans le header pour dire au serveur qui on est
     const response = await fetch('http://localhost:4242/reservations', {
         method: 'POST',
-        // On dis à server qu'on envoie les données en formation json
-        headers: { 'Content-Type': 'application/json' },
-        //transform l'objet de javascrip en text json
+        headers: { 
+            'Content-Type': 'application/json',
+            'authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({
             salon: nomSalon,
             nom: formulaire.nom.value,
@@ -104,7 +114,7 @@ formulaire.addEventListener('submit', async function(event) {
     });
 
     if (response.ok) {
-        window.location.href = '../page-recap/recap.html';
+        window.location.href = '../page-recap/Recap.html';
     } else {
         const data = await response.json();
         alert(data.erreur);

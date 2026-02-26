@@ -450,3 +450,90 @@ footer {
         font-size: 0.85rem;
     }
 }
+
+/* ===== PAGE ADMIN ===== */
+#section-salons,
+#section-reservations {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 20px;
+}
+
+#section-salons h2,
+#section-reservations h2 {
+    color: #667eea;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+#formulaire-salon {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+#formulaire-salon input {
+    flex: 1;
+    padding: 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 1rem;
+    outline: none;
+}
+
+#formulaire-salon input:focus {
+    border-color: #667eea;
+}
+
+#liste-salons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+#liste-reservations {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    #formulaire-salon {
+        flex-direction: column;
+    }
+
+    #formulaire-salon input,
+    #formulaire-salon button {
+        width: 100%;
+    }
+
+    #liste-salons,
+    #liste-reservations {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===== POPUP ===== */
+.popup {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    z-index: 9999;
+}
+
+.popup-succes {
+    background: #4CAF50;
+}
+
+.popup-erreur {
+    background: #e74c3c;
+}

@@ -10,11 +10,7 @@ import jwt from 'jsonwebtoken';
 const router = Router();
 const sql = neon(process.env.DATABASE_URL);
 
-// ─── RESERVATIONS ─────────────────────────────────────────────────
 
-// récupérer les réservations
-// admin → toutes les réservations
-// client → seulement ses propres réservations
 router.get('/', async (req, res) => {
   // on récupère le token pour savoir qui est connecté
   const authHeader = req.headers['authorization'];

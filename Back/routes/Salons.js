@@ -10,7 +10,6 @@ import jwt from 'jsonwebtoken';
 const router = Router();
 const sql = neon(process.env.DATABASE_URL);
 
-// ─── Vérification que l'utilisateur est admin ────────────────────
 // ce middleware s'exécute avant certaines routes pour vérifier que c'est bien un admin
 // si c'est pas un admin on refuse l'accès
 
@@ -39,7 +38,6 @@ function verifierAdmin(req, res, next) {
     next();
 }
 
-// ─── SALONS ───────────────────────────────────────────────────────
 
 // tout le monde peut voir les salons
 router.get('/', async (req, res) => {

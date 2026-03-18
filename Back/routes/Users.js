@@ -10,7 +10,6 @@ import jwt from 'jsonwebtoken';
 const router = Router();
 const sql = neon(process.env.DATABASE_URL);
 
-// ─── REGISTER ─────────────────────────────────────────────────────
 
 router.post('/register', async (req, res) => {
   // on récupère les données envoyées par le front
@@ -28,7 +27,6 @@ router.post('/register', async (req, res) => {
   res.json({ message: 'Compte créé avec succès !' });
 });
 
-// ─── LOGIN ────────────────────────────────────────────────────────
 
 router.post('/login', async (req, res) => {
   // on récupère les données envoyées par le front

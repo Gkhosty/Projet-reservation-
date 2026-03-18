@@ -18,7 +18,7 @@ section.innerHTML = `
     </form>
 `;
 
-// ─── Afficher un message popup ────────────────────────────────────
+// on crée une fonction pour utlser apres
 function afficherPopup(message, type = 'popup-succes') {
     const popup = document.createElement('div');
     popup.textContent = message;
@@ -27,13 +27,12 @@ function afficherPopup(message, type = 'popup-succes') {
     setTimeout(() => popup.remove(), 3000);
 }
 
-// ─────────────────────────────────────────────────────────────────
-
+// le button se connecté
 const formulaire = document.getElementById('formulaire-login');
 formulaire.addEventListener('submit', async function(event){
     event.preventDefault();
 
-    const response = await fetch('http://localhost:4242/login', {
+    const response = await fetch('https://projet-reservation-rho.vercel.app/login', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({

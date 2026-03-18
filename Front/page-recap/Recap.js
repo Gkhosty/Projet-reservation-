@@ -34,7 +34,7 @@ if (!token) {
 
 // afficher les rdv de l'utilisateur connecté
 async function fetchRDV() {
-    const response = await fetch('http://localhost:4242/reservations', {
+    const response = await fetch('https://projet-reservation-rho.vercel.app/reservations', {
         headers: { 'authorization': `Bearer ${token}` }
     });
     const reservations = await response.json();
@@ -69,7 +69,7 @@ async function fetchRDV() {
         btnModifier.textContent = 'MODIFICATION';
         btnModifier.className = 'btn-modifier';
         btnModifier.addEventListener('click', async () => {
-            await fetch(`http://localhost:4242/reservations/${rdv.id}`, {
+            await fetch(`https://projet-reservation-rho.vercel.app/reservations/${rdv.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -85,7 +85,7 @@ async function fetchRDV() {
         btnSupprimer.textContent = 'SUPRIMER';
         btnSupprimer.className = 'btn-supprimer';
         btnSupprimer.addEventListener('click', async () => {
-            await fetch(`http://localhost:4242/reservations/${rdv.id}`, {
+            await fetch(`https://projet-reservation-rho.vercel.app/reservations/${rdv.id}`, {
                 method: 'DELETE'
             });
             afficherPopup('🗑️ RDV supprimé !', 'popup-erreur');

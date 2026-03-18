@@ -33,7 +33,7 @@ const formulaire = document.getElementById('formulaire-register');
 formulaire.addEventListener('submit', async function(event){
     event.preventDefault();
 
-    const response = await fetch('http://localhost:4242/register', {
+    const response = await fetch('https://projet-reservation-rho.vercel.app/register', {
         method: 'POST',
         headers: {'Content-type': 'application/json'},
         body: JSON.stringify({

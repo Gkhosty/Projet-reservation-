@@ -65,7 +65,7 @@ document.body.appendChild(footer);
 
 // afficher les salons
 async function fetchData(search = '') {
-    const response = await fetch('http://localhost:4242/salons');
+    const response = await fetch('https://projet-reservation-rho.vercel.app/salons');
     const salons = await response.json();
 
     const container = document.getElementById('rout');

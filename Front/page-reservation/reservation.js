@@ -87,7 +87,7 @@ document.body.appendChild(section);
 const demain = new Date();
 demain.setDate(demain.getDate() + 1);
 const demainFormate = demain.toISOString().split('T')[0];
-document.querySelector('input[name="date"]').min = demainFormate;
+document.querySelector('input[name="date"]').min = demainFormate; // on empeche une date avant demain
 
 const formulaire = document.getElementById('formulaire');
 
@@ -95,7 +95,7 @@ formulaire.addEventListener('submit', async function(event) {
     event.preventDefault();
 
     // on envoie le token dans le header pour dire au serveur qui on est
-    const response = await fetch('http://localhost:4242/reservations', {
+    const response = await fetch('https://projet-reservation-rho.vercel.app/reservations', {
         method: 'POST',
         headers: { 
             'Content-Type': 'application/json',

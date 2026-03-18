@@ -15,7 +15,8 @@ if (role !== 'admin') {
     window.location.href = '../page-accueil/index.html';
 }
 
-// ─── Afficher un message popup ────────────────────────────────────
+// afficher un popop
+
 function afficherPopup(message, type = 'popup-succes') {
     const popup = document.createElement('div');
     popup.textContent = message;
@@ -24,7 +25,6 @@ function afficherPopup(message, type = 'popup-succes') {
     setTimeout(() => popup.remove(), 3000);
 }
 
-// ─── HEADER ───────────────────────────────────────────────────────
 const header = document.querySelector('header');
 header.className = 'header';
 header.innerHTML = `
@@ -42,7 +42,7 @@ document.getElementById('btn-deconnexion').addEventListener('click', () => {
     window.location.href = '../page-login/login.html';
 });
 
-// ─── SECTION SALONS ───────────────────────────────────────────────
+
 const sectionSalons = document.getElementById('section-salons');
 sectionSalons.innerHTML = `
     <h2>Gestion des salons</h2>
@@ -59,7 +59,7 @@ sectionSalons.innerHTML = `
 
 // afficher tous les salons
 async function fetchSalons() {
-    const response = await fetch('http://localhost:4242/salons');
+    const response = await fetch('https://projet-reservation-rho.vercel.app/salons');
     const salons = await response.json();
 
     const listeSalons = document.getElementById('liste-salons');
@@ -79,7 +79,7 @@ async function fetchSalons() {
 
         // bouton supprimer salon
         card.querySelector('.btn-supprimer').addEventListener('click', async () => {
-            await fetch(`http://localhost:4242/salons/${salon.id}`, {
+            await fetch(`https://projet-reservation-rho.vercel.app/${salon.id}`, {
                 method: 'DELETE',
                 headers: { 'authorization': `Bearer ${token}` }
             });
@@ -96,7 +96,7 @@ const formulaireSalon = document.getElementById('formulaire-salon');
 formulaireSalon.addEventListener('submit', async function(event) {
     event.preventDefault();
 
-    await fetch('http://localhost:4242/salons', {
+    await fetch('https://projet-reservation-rho.vercel.app/salons', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -116,7 +116,7 @@ formulaireSalon.addEventListener('submit', async function(event) {
 
 fetchSalons();
 
-// ─── SECTION RESERVATIONS ─────────────────────────────────────────
+// section reservation
 const sectionReservations = document.getElementById('section-reservations');
 sectionReservations.innerHTML = `
     <h2>Toutes les réservations</h2>
@@ -125,7 +125,7 @@ sectionReservations.innerHTML = `
 
 // afficher toutes les réservations
 async function fetchReservations() {
-    const response = await fetch('http://localhost:4242/reservations', {
+    const response = await fetch('https://projet-reservation-rho.vercel.app/reservations', {
         headers: { 'authorization': `Bearer ${token}` }
     });
     const reservations = await response.json();
@@ -150,7 +150,7 @@ async function fetchReservations() {
 
         // bouton supprimer réservation
         card.querySelector('.btn-supprimer').addEventListener('click', async () => {
-            await fetch(`http://localhost:4242/reservations/${rdv.id}`, {
+            await fetch(`https://projet-reservation-rho.vercel.app/reservations/${rdv.id}`, {
                 method: 'DELETE',
                 headers: { 'authorization': `Bearer ${token}` }
             });
@@ -164,6 +164,5 @@ async function fetchReservations() {
 
 fetchReservations();
 
-// ─── FOOTER ───────────────────────────────────────────────────────
 const footer = document.querySelector('footer');
 footer.innerHTML = `<p>© 2026 CoiffureProMax – Tous droits réservés</p>`;
